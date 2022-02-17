@@ -91,47 +91,47 @@ resource "aws_route_table_association" "diamond_dogs" {
   route_table_id = aws_route_table.diamond_dogs.id
 }
 
-# data "aws_ami" "ubuntu" {
-#   most_recent = true
+data "aws_ami" "ubuntu" {
+  most_recent = true
 
-#   filter {
-#     name   = "name"
-#     values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
-#   }
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
+  }
 
-#   filter {
-#     name   = "virtualization-type"
-#     values = ["hvm"]
-#   }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
 
-#   owners = ["099720109477"] # Canonical
-# }
+  owners = ["099720109477"] # Canonical
+}
 
-# resource "aws_eip" "diamond_dogs" {
-#   instance = aws_instance.diamond_dogs.id
-#   vpc      = true
-# }
+resource "aws_eip" "diamond_dogs" {
+  instance = aws_instance.diamond_dogs.id
+  vpc      = true
+}
 
-# resource "aws_eip_association" "diamond_dogs" {
-#   instance_id   = aws_instance.diamond_dogs.id
-#   allocation_id = aws_eip.diamond_dogs.id
-# }
+resource "aws_eip_association" "diamond_dogs" {
+  instance_id   = aws_instance.diamond_dogs.id
+  allocation_id = aws_eip.diamond_dogs.id
+}
 
-# resource "aws_instance" "diamond_dogs" {
-#   ami                         = data.aws_ami.ubuntu.id
-#   instance_type               = var.instance_type
-#   associate_public_ip_address = true
-#   subnet_id                   = aws_subnet.diamond_dogs.id
-#   vpc_security_group_ids      = [aws_security_group.diamond_dogs.id]
+resource "aws_instance" "diamond_dogs" {
+  ami                         = data.aws_ami.ubuntu.id
+  instance_type               = var.instance_type
+  associate_public_ip_address = true
+  subnet_id                   = aws_subnet.diamond_dogs.id
+  vpc_security_group_ids      = [aws_security_group.diamond_dogs.id]
 
-#   user_data = templatefile("${path.module}/files/deploy_app.sh", {
-#     placeholder = var.placeholder
-#     width       = var.width
-#     height      = var.height
-#     project     = var.project
-#   })
+  user_data = templatefile("${path.module}/files/deploy_app.sh", {
+    placeholder = var.placeholder
+    width       = var.width
+    height      = var.height
+    project     = var.project
+  })
 
-#   tags = {
-#     Name = "${var.prefix}-diamond_dogs-instance"
-#   }
-# }
+  tags = {
+    Name = "${var.prefix}-diamond_dogs-instance"
+  }
+}
